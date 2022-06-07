@@ -1,4 +1,4 @@
-import { Injectable, HttpException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from 'src/entity/post.entity';
@@ -12,8 +12,10 @@ export class PostService {
         private postRepository: Repository<Post>,
     ) { }
 
-    async findAll(): Promise<Post[]> {
-        return await this.postRepository.find();
+    async findTop10(): Promise<Post[]> {
+        //  SELECT p.id, COUNT(c.postId) as count FROM post p LEFT JOIN comment c ON c.postId = p.id GROUP BY p.id ORDER BY count DESC limit 10;
+        console.log(await this.postRepository.find({ relations: ["comments"] }));
+        return await this.postRepository.find({ relations: ["comments"] });
     }
 
     async findById(id: number): Promise<Post | null> {
@@ -27,7 +29,7 @@ export class PostService {
     async update(id: number, p: UpdatePostDTO): Promise<boolean> {
         const foundPost = await this.postRepository.findOne({ where: { id } });
         if (!foundPost) {
-            throw new HttpException('post not found', 404);
+            return false;
         }
         return (await this.postRepository.save({
             ...foundPost,
@@ -38,7 +40,7 @@ export class PostService {
     async remove(id: number): Promise<boolean> {
         const foundPost = await this.postRepository.findOne({ where: { id } });
         if (!foundPost) {
-            throw new HttpException('post not found', 404);
+            return false;
         }
         return (await this.postRepository.delete(id)) ? true : false;
     }

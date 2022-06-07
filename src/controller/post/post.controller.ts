@@ -9,7 +9,7 @@ export class PostController {
 
     @Get()
     async getAll(@Response() res) {
-        const data = await this.postService.findAll();
+        const data = await this.postService.findTop10();
         res.status(HttpStatus.OK).json(data)
     }
 

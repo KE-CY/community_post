@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToMany } from 'typeorm';
+import { Comment } from './comment.entity';
 
 @Entity()
 export class Post {
@@ -10,6 +11,9 @@ export class Post {
 
     @Column({ length: 256 })
     image: string;
+
+    @OneToMany(() => Comment, comment => comment.post, { onDelete: 'CASCADE' })
+    comments: Comment[];
 
     @CreateDateColumn({ name: 'createdAt' })
     createdAt: Date;

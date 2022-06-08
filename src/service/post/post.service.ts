@@ -19,7 +19,7 @@ export class PostService {
         //  SELECT p.* FROM post p LEFT JOIN comment c ON c.postId = p.id GROUP BY p.id ORDER BY  COUNT(c.postId) DESC limit 10;
         // SELECT p.* FROM post p LEFT JOIN comment c ON c.post_id = p.id GROUP BY p.id ORDER BY  COUNT(c.post_id) DESC limit 10;
         //  SELECT p.*, COUNT(c.postId) as count FROM post p LEFT JOIN comment c ON c.postId = p.id GROUP BY p.id ORDER BY count DESC limit 10;
-
+        console.log(this.postRepository.find({ relations: ["comments"] }));
         return await this.postRepository.query(`SELECT p.* FROM post p LEFT JOIN comment c ON c.post_id = p.id GROUP BY p.id ORDER BY  COUNT(c.post_id) DESC limit 10;`);
     }
 

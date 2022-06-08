@@ -20,7 +20,7 @@ A. 如要加快搜尋速度，可以使用 MySQL 的索引方式做搜尋
 $ npm run start:dev
 ```
 
-## Stay in touch
+## Author
 
 - Author - [Chih Yi, Ko](https://github.com/KE-CY)
 

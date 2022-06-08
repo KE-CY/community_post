@@ -1,12 +1,8 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-  
-</p>
-
 ## Description
 使用 Nest 框架開發簡易貼文留言功能
 
 ## DB desing
+![Community_Post](https://user-images.githubusercontent.com/54132183/172594698-8f5f654b-d326-4869-b64e-e410e695d032.png)
 
 
 ## Engineering planning

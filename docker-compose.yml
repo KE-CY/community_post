@@ -9,7 +9,7 @@ services:
     security_opt:
       - seccomp:unconfined
     environment:
-      MYSQL_USER: swipper
+      MYSQL_USER: swipper_test
       MYSQL_PASSWORD: swipper_test
       MYSQL_ROOT_PASSWORD: swipper_test
       MYSQL_DATABASE: community_post
@@ -24,14 +24,6 @@ services:
   backend:
     build: .
     restart: always
-    environment:
-      MODE: dev
-      PORT: 3000
-      DEV_USERNAME: swipper_test
-      DEV_PASSWORD: swipper_test
-      DEV_HOST: db
-      DEV_PORT: 3306
-      DEV_DB: community_post
     links:
       - db
     ports:

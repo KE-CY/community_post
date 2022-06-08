@@ -13,12 +13,6 @@ export class PostController {
         res.status(HttpStatus.OK).json(data)
     }
 
-    // @Get('/:id')
-    // async getById(@Param('id') id: number, @Response() res) {
-    //     const data = await this.postService.findById(id);
-    //     res.status(HttpStatus.OK).json(data)
-    // }
-
     @Get('/top10') // 需更改為留言最多的10資料
     async getTop10(@Response() res) {
         const data = await this.postService.findTop10();

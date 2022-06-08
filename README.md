@@ -19,6 +19,19 @@ A. 如要加快搜尋速度，可以使用 MySQL 的索引方式做搜尋
 # watch mode
 $ npm run start:dev
 ```
+## Api 
+### Post
+1. Get all post -> Get: `/post`
+2. Get top10 comment -> Get:  `/post/top10`
+3. Create post -> Post: `/post`
+4. Update post -> Patch: `/post/:id`
+5. Delete post -> Delete: `/post/:id`
+
+### Comment
+1. Create comment -> Post: `/comment`
+2. Reply comment -> Post: `/comment/:id`
+3. Update comment -> Patch: `/comment/:id`
+4. Delete comment -> Delete: `/comment/:id`
 
 ## Author
 

@@ -1,4 +1,4 @@
-import { Body, Param, Controller, HttpStatus, Patch, Post, Response, Delete } from '@nestjs/common';
+import { Body, Param, Controller, HttpStatus, Patch, Post, Response, Delete, HttpException } from '@nestjs/common';
 import { CreateCommentDTO } from 'src/dto/comment.create.dto';
 import { UpdateCommentDTO } from 'src/dto/comment.update.dto';
 import { ReplyCommentDTO } from 'src/dto/comment.reply.dto';
@@ -21,6 +21,10 @@ export class CommentController {
 
     @Post('/:id')
     async reply(@Body() replyCommentDTO: ReplyCommentDTO, @Param('id') commentId: number, @Response() res) {
+        const isParent = await this.commentService.checkoutParent(commentId);
+        if (isParent) {
+            throw new HttpException("Can't reply", 400);
+        }
         try {
             const isReply = await this.commentService.reply(commentId, replyCommentDTO);
             res.status(HttpStatus.OK).json({ status: isReply ? 'success' : 'fail' });

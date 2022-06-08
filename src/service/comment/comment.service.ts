@@ -19,6 +19,11 @@ export class CommentService {
         return await this.commentRepository.findOne({ where: { id } })
     }
 
+    async checkoutParent(id: number): Promise<boolean> {
+        const comment = await this.commentRepository.findOne({ where: { id } })
+        return (comment.parentCommentId) ? true : false;
+    }
+
     async create(c: CreateCommentDTO): Promise<boolean> {
         const foundPost = await this.postService.findById(c.postId);
         if (!foundPost) {
@@ -67,9 +72,7 @@ export class CommentService {
         if (!foundPost) {
             return false;
         }
-        const foundChildrenComment = await this.commentRepository.find({ where: { parentCommentId: id } });
-        // await this.commentRepository.query(`delete from comment where id=6 or parent_comment_id=6;`)
-        return (await this.commentRepository.delete({ id: id, parentCommentId: id })) ? true : false;
+        return (await this.commentRepository.createQueryBuilder().delete().where("id = :id or parent_comment_id = :id", { id: id }).execute()) ? true : false;
     }
 
 }

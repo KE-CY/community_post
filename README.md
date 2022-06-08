@@ -19,6 +19,12 @@ A. 如要加快搜尋速度，可以使用 MySQL 的索引方式做搜尋
 # watch mode
 $ npm run start:dev
 ```
+## Docker run
+```bash
+$ docker-compose build --no-cache
+$ docker-compose up -d
+```
+
 ## Api 
 ### Post
 1. Get all post -> Get: `/post`

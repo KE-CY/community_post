@@ -7,10 +7,10 @@ export class Post {
     id: number;
 
     @Column()
-    content: string;
+    user: string
 
-    @Column({ length: 256 })
-    image: string;
+    @Column()
+    content: string;
 
     @OneToMany(() => Comment, comment => comment.post, { onDelete: 'CASCADE' })
     comments: Comment[];

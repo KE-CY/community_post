@@ -5,6 +5,7 @@ import { Comment } from 'src/entity/comment.entity';
 import { CreateCommentDTO } from 'src/dto/comment.create.dto';
 import { PostService } from '../post/post.service';
 import { UpdateCommentDTO } from 'src/dto/comment.update.dto';
+import { ReplyCommentDTO } from 'src/dto/comment.reply.dto';
 
 @Injectable()
 export class CommentService {
@@ -15,18 +16,33 @@ export class CommentService {
     ) { }
 
     async findById(id: number): Promise<Comment | null> {
-        return await this.commentRepository.findOne({ where: { id } });
+        return await this.commentRepository.findOne({ where: { id } })
     }
 
-    async create(c: CreateCommentDTO): Promise<Comment> {
-        const comment = new Comment();
-        comment.content = c.content;
+    async create(c: CreateCommentDTO): Promise<boolean> {
         const foundPost = await this.postService.findById(c.postId);
         if (!foundPost) {
-            throw new HttpException('post not found', 404);
+            // throw new HttpException('post not found', 404);
+            return false;
         }
+        const comment = new Comment();
+        comment.user = c.user;
+        comment.content = c.content;
         comment.post = foundPost;
-        return await this.commentRepository.save(comment);
+        return (await this.commentRepository.save(comment)) ? true : false;
+    }
+
+    async reply(commentId: number, r: ReplyCommentDTO): Promise<boolean> {
+        const foundComment = await this.commentRepository.findOne({ where: { id: commentId } });
+        if (!foundComment) {
+            // throw new HttpException('comment not found', 404);
+            return false;
+        }
+        const comment = new Comment();
+        Object.assign(comment, r);
+        comment.parentCommentId = foundComment.id;
+        comment.level = foundComment.level + 1;
+        return (await this.commentRepository.save(comment)) ? true : false;
     }
 
     async update(id: number, c: UpdateCommentDTO): Promise<boolean> {
@@ -35,11 +51,12 @@ export class CommentService {
             return false;
         }
         const foundComment = await this.commentRepository.findOne({ where: { id } });
-        if (!foundComment) {
+        if (!foundComment || foundComment.user != c.user) {
             return false;
         }
         const comment = new Comment();
         comment.id = id;
+        comment.user = c.user;
         comment.content = c.content;
         comment.post = foundPost;
         return (await this.commentRepository.update(comment.id, comment)) ? true : false;
@@ -47,11 +64,12 @@ export class CommentService {
 
     async remove(id: number): Promise<boolean> {
         const foundPost = await this.commentRepository.findOne({ where: { id } });
-
         if (!foundPost) {
             return false;
         }
-        return (await this.commentRepository.delete(id)) ? true : false;
+        const foundChildrenComment = await this.commentRepository.find({ where: { parentCommentId: id } });
+        // await this.commentRepository.query(`delete from comment where id=6 or parent_comment_id=6;`)
+        return (await this.commentRepository.delete({ id: id, parentCommentId: id })) ? true : false;
     }
 
 }

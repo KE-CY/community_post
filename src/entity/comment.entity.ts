@@ -6,15 +6,24 @@ export class Comment {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    user: string
+
     @ManyToOne(() => Post, post => post.comments, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'postId' })
+    @JoinColumn({ name: 'post_id' })
     post: Post;
 
-    @Column()
+    @Column({ name: 'post_id' })
     postId: number;
 
     @Column()
     content: string;
+
+    @Column({ default: null, comment: "parent comment id", name: 'parent_comment_id' })
+    parentCommentId: number;
+
+    @Column({ default: 1 })
+    level: number;
 
     @CreateDateColumn({ name: 'createdAt' })
     createdAt: Date;

@@ -9,17 +9,23 @@ export class PostController {
 
     @Get()
     async getAll(@Response() res) {
+        const data = await this.postService.findAll();
+        res.status(HttpStatus.OK).json(data)
+    }
+
+    // @Get('/:id')
+    // async getById(@Param('id') id: number, @Response() res) {
+    //     const data = await this.postService.findById(id);
+    //     res.status(HttpStatus.OK).json(data)
+    // }
+
+    @Get('/top10') // 需更改為留言最多的10資料
+    async getTop10(@Response() res) {
         const data = await this.postService.findTop10();
         res.status(HttpStatus.OK).json(data)
     }
 
-    @Get('/:id') // 需更改為留言最多的10資料
-    async getById(@Param('id') id: number, @Response() res) {
-        const data = await this.postService.findById(id);
-        res.status(HttpStatus.OK).json(data)
-    }
-
-    @Post() // 圖片上傳尚未解決
+    @Post()
     async create(@Body() createPostDTO: CreatePostDTO, @Response() res) {
         try {
             await this.postService.create(createPostDTO);
@@ -30,7 +36,7 @@ export class PostController {
         }
     }
 
-    @Patch('/:id') // 圖片上傳尚未解決
+    @Patch('/:id')
     async update(@Response() res, @Param('id') id: number, @Body() updatePostDTO: UpdatePostDTO) {
         try {
             const isUpdate = await this.postService.update(id, updatePostDTO)

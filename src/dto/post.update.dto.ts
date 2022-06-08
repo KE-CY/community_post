@@ -1,12 +1,12 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
 
 export class UpdatePostDTO {
+    @IsString()
+    @IsNotEmpty()
+    readonly user: string;
+
     @IsOptional()
     @IsString()
     readonly content: string;
-
-    @IsOptional()
-    @IsString()
-    readonly image: string;
 
 }

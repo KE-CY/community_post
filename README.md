@@ -6,11 +6,11 @@
 
 
 ## Q2. Engineering planning
-專案架構使用乾淨架構開發
-API 遵循使用 RESTful API 做開發
-設計 Database 
-撰寫貼文的 CRUD
-撰寫留言的 CRUD
+專案架構使用乾淨架構開發<br>
+API 遵循使用 RESTful API 做開發<br>
+設計 Database <br>
+撰寫貼文的 CRUD<br>
+撰寫留言的 CRUD<br>
 
 
 ## Api 
